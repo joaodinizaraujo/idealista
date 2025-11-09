@@ -1,0 +1,40 @@
+<div class="auth-container">
+  <h2>Cadastrar</h2>
+  <div class="flash-messages">
+    {{#if messages.error}}<div class="error">{{messages.error}}</div>{{/if}}
+    {{#if messages.success}}<div
+        class="success"
+      >{{messages.success}}</div>{{/if}}
+  </div>
+  <form class="auth-form" method="POST" action="/auth/register">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+    <label for="name">Nome</label>
+    <input id="name" name="name" type="text" placeholder="Seu nome" required />
+    <label for="email">E-mail</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      placeholder="Seu e-mail"
+      required
+    />
+    <label for="password">Senha</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="Sua senha"
+      required
+    />
+    <input
+      type="hidden"
+      name="profile_id"
+      value="9a018850-e4fd-410e-a246-9fe5a132220e"
+    />
+    <button type="submit">Registrar</button>
+  </form>
+  <div class="auth-links">
+    Já tem conta?
+    <a href="/auth/login">Entrar</a>
+  </div>
+</div>

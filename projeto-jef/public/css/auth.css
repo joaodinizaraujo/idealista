@@ -1,0 +1,120 @@
+/* public/css/auth.css */
+
+body {
+  background: linear-gradient(135deg, #1677ff 0%, #3b8be0 100%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-container {
+  background: #fff;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(30, 60, 140, 0.12);
+  min-width: 340px;
+  max-width: 380px;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.auth-container h2 {
+  color: #1677ff;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.auth-form label {
+  font-size: 1rem;
+  color: #2453a6;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid #dde9fa;
+  border-radius: 0.8rem;
+  margin-bottom: 1.1rem;
+  font-size: 1rem;
+  background: #f8fbff;
+  transition: border 0.2s;
+}
+
+.auth-form input[type="text"]:focus,
+.auth-form input[type="email"]:focus,
+.auth-form input[type="password"]:focus {
+  border-color: #1677ff;
+  outline: none;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(90deg, #1677ff 80%, #45a6ff 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 8px rgba(22, 119, 255, 0.1);
+  transition: background 0.18s, transform 0.12s;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.auth-form button:hover {
+  background: linear-gradient(90deg, #2453a6 60%, #1677ff 100%);
+  transform: translateY(-1px) scale(1.015);
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.98rem;
+}
+
+.auth-links a {
+  color: #1677ff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+
+.auth-links a:hover {
+  color: #2453a6;
+  text-decoration: underline;
+}
+
+.flash-messages {
+  margin-bottom: 1.1rem;
+}
+
+.flash-messages .error {
+  background: #ffe4e4;
+  color: #b10021;
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+
+.flash-messages .success {
+  background: #e3f7ef;
+  color: #188546;
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}

@@ -1,0 +1,38 @@
+<div class="auth-container">
+  <h2>Login</h2>
+  <div class="flash-messages">
+    {{#if messages.error}}<div class="error">{{messages.error}}</div>{{/if}}
+    {{#if messages.success}}<div
+        class="success"
+      >{{messages.success}}</div>{{/if}}
+  </div>
+  <form class="auth-form" method="POST" action="/auth/login">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
+    <label for="email">E-mail</label>
+    <input
+      id="email"
+      type="email"
+      name="email"
+      placeholder="Digite seu e-mail"
+      required
+      autocomplete="email"
+    />
+
+    <label for="password">Senha</label>
+    <input
+      id="password"
+      type="password"
+      name="password"
+      placeholder="Digite sua senha"
+      required
+      autocomplete="current-password"
+    />
+
+    <button type="submit">Entrar</button>
+  </form>
+  <div class="auth-links">
+    Não tem conta?
+    <a href="/auth/register">Cadastrar</a>
+  </div>
+</div>

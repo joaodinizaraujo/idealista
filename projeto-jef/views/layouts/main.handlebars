@@ -1,0 +1,27 @@
+<html lang="pt-br">
+  <head>
+    <link rel="stylesheet" href="/css/auth.css" />
+    <meta charset="UTF-8" />
+    <title>Plataforma de Ideias</title>
+  </head>
+  <body>
+    {{#if messages.success}}
+      <div
+        style="background:#c6f6d5;color:#22543d;padding:10px;border-radius:4px;margin-bottom:10px;"
+      >
+        {{messages.success}}
+      </div>
+    {{/if}}
+
+    {{#if messages.error}}
+      <div
+        style="background:#fed7d7;color:#742a2a;padding:10px;border-radius:4px;margin-bottom:10px;"
+      >
+        {{messages.error}}
+      </div>
+    {{/if}}
+
+    {{{body}}}
+
+  </body>
+</html>
