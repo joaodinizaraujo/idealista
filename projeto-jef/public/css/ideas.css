@@ -226,6 +226,26 @@ textarea:focus {
   margin-bottom: 0.8rem;
 }
 
+.idea-actions .btn {
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Estilo para quando o usuário votou UP */
+.idea-actions button[value="UP"].voto-ativo {
+  background-color: #28a745; /* Verde: cor de sucesso */
+  border-color: #28a745;
+  color: white;
+  font-weight: bold;
+}
+
+/* Estilo para quando o usuário votou DOWN */
+.idea-actions button[value="DOWN"].voto-ativo {
+  background-color: #dc3545; /* Vermelho: cor de perigo/aviso */
+  border-color: #dc3545;
+  color: white;
+  font-weight: bold;
+}
+
 /* ======== Página de detalhe (detail.handlebars) ======== */
 .idea-detail {
   background: #f8fbff;

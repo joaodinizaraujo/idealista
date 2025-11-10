@@ -8,8 +8,6 @@ exports.loginPage = (req, res) => {
 
 // Login de usuário
 exports.login = async (req, res) => {
-  console.log("🔹 Requisição de login recebida:", req.body);
-
   const { email, password } = req.body;
 
   try {

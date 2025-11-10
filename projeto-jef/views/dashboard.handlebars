@@ -31,11 +31,29 @@
           <small>Por {{this.User.name}}</small>
           <div class="idea-actions">
             
-            <form action="/ideias/vote" method="POST" style="display: inline;">
+            <form action="/ideias/votar" method="POST" style="display: inline;">
+              <input type="hidden" name="ideaId" value="{{this.id}}"> 
+              <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
+              <button 
+                type="submit" 
+                name="type" 
+                value="UP" 
+                class="btn btn-secondary {{#if (eq this.userVoteType 'UP')}}voto-ativo{{/if}}" 
+              >
+                👍 Votar ({{this.totalUpvotes}})
+              </button>
+            </form>
+
+            <form action="/ideias/votar" method="POST" style="display: inline;">
               <input type="hidden" name="ideaId" value="{{this.id}}">
               <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
-              <button type="submit" name="type" value="UP" class="btn btn-secondary">
-                👍 Votar ({{this.totalUpvotes}})
+              <button 
+                type="submit" 
+                name="type" 
+                value="DOWN" 
+                class="btn btn-secondary {{#if (eq this.userVoteType 'DOWN')}}voto-ativo{{/if}}" 
+              >
+                👎 Votar ({{this.totalDownvotes}})
               </button>
             </form>
 

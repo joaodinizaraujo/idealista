@@ -2,6 +2,8 @@ const { Idea, Vote, User } = require("../models");
 const sequelize = require("sequelize");
 
 exports.listIdeasForDashboard = async (req, res) => {
+  const userId = req.session.user ? req.session.user.id : null;
+
   try {
     const ideas = await Idea.findAll({
       include: [{ model: User, attributes: ["name"] }],
@@ -13,9 +15,21 @@ exports.listIdeasForDashboard = async (req, res) => {
             ),
             "totalUpvotes",
           ],
+          [
+            sequelize.literal(
+              `(SELECT COUNT(*) FROM tb_votes WHERE tb_votes.idea_id = Idea.id AND tb_votes.vote_type = 'DOWN')`
+            ),
+            "totalDownvotes",
+          ],
+          [
+            sequelize.literal(
+              `(SELECT tb_votes.vote_type FROM tb_votes WHERE tb_votes.idea_id = Idea.id AND tb_votes.user_id = '${userId}' LIMIT 1)`
+            ),
+            "userVoteType",
+          ],
         ],
       },
-      order: [[sequelize.literal("totalUpvotes"), "DESC"]],
+      order: [[sequelize.literal("totalUpvotes - totalDownvotes"), "DESC"]],
       group: ["Idea.id", "User.id", "User.name"],
     });
 
@@ -36,7 +50,6 @@ exports.redirectList = (req, res) => {
   res.redirect("/dashboard");
 };
 
-// Rotas de CRUD
 exports.createPage = (req, res) => {
   res.render("ideias/nova");
 };
