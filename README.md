@@ -39,12 +39,12 @@ Acesse a aplicação em: http://localhost:3000/
 
 ## 🎯 Tabela de Endpoints
 
-### Esta tabela detalha as principais rotas da lógica de negócio e as restrições de acesso implementadas:
+Esta tabela detalha as principais rotas da lógica de negócio e as restrições de acesso implementadas:
 
-Funcionalidade,Método,Endpoint,Restrição
-Dashboard,GET,/dashboard,Login
-Ideias (CRUD),,,
-Criar Ideia,POST,/ideias/nova,Login
-Editar Ideia,POST,/ideias/editar/:id,Autor
-Deletar Ideia,POST,/ideias/deletar/:id,Autor
-Votação,POST,/ideias/votar,Login
+| Funcionalidade | Método | Endpoint              | Restrição          |
+| :------------- | :----- | :-------------------- | :----------------- |
+| **Dashboard**  | `GET`  | `/dashboard`          | **Login**          |
+| Criar Ideia    | `POST` | `/ideias/nova`        | **Login**          |
+| Editar Ideia   | `POST` | `/ideias/editar/:id`  | **Autor** da Ideia |
+| Deletar Ideia  | `POST` | `/ideias/deletar/:id` | **Autor** da Ideia |
+| Votação        | `POST` | `/ideias/votar`       | **Login**          |
