@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { User } = require("../models"); // importa o model do usuário
+const { User } = require("../models");
 
 // Página de login
 exports.loginPage = (req, res) => {
@@ -13,21 +13,20 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Verifica se o usuário existe
     const user = await User.findOne({ where: { email } });
     if (!user) {
+      console.log("erro no user!");
       req.flash("error", "Usuário não encontrado!");
       return res.redirect("/auth/login");
     }
-
-    // Verifica senha
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
+      console.log("Senha incorreta!!!");
       req.flash("error", "Senha incorreta!");
       return res.redirect("/auth/login");
     }
 
-    // Guarda informações básicas na sessão (sem a senha)
+    // Salva o usuário na sessão
     req.session.user = {
       id: user.id,
       name: user.name,
@@ -35,10 +34,16 @@ exports.login = async (req, res) => {
       profile_id: user.profile_id,
     };
 
-    console.log("✅ Login bem-sucedido:", req.session.user);
+    req.session.save((err) => {
+      if (err) {
+        console.error("❌ Erro ao salvar sessão:", err);
+        req.flash("error", "Erro ao iniciar sessão. Tente novamente.");
+        return res.redirect("/auth/login");
+      }
 
-    // Redireciona para o dashboard
-    return res.redirect("/dashboard");
+      console.log("✅ Login bem-sucedido! Redirecionando para dashboard...");
+      return res.redirect("/dashboard");
+    });
   } catch (err) {
     console.error("❌ Erro ao fazer login:", err);
     req.flash("error", "Erro interno. Tente novamente.");
@@ -67,7 +72,7 @@ exports.register = async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     // Cria o usuário
-    await User.create({ name, email, password: hash, profile_id });
+    await User.create({ name, email, password, profile_id });
 
     req.flash(
       "success",

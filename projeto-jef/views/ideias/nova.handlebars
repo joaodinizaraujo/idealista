@@ -1,0 +1,15 @@
+<div class="ideas-container">
+  <h1>Criar nova ideia</h1>
+
+  <form action="/ideias/nova" method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
+    <label for="title">Título:</label>
+    <input type="text" name="title" id="title" required />
+
+    <label for="description">Descrição:</label>
+    <textarea name="description" id="description" required></textarea>
+
+    <button type="submit" class="btn">Criar</button>
+  </form>
+</div>

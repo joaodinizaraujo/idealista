@@ -1,26 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const ideaController = require("../controllers/ideaController");
 const isLoggedIn = require("../middlewares/isLoggedIn");
+const ideaController = require("../controllers/ideaController");
+const voteController = require("../controllers/voteController");
 
-// Listar todas
-router.get("/", isLoggedIn, ideaController.list);
+// CRUD
 
-// Nova ideia
 router.get("/nova", isLoggedIn, ideaController.createPage);
-router.post("/nova", isLoggedIn, ideaController.create);
+router.post("/nova", isLoggedIn, ideaController.createIdea);
+router.get("/editar/:id", isLoggedIn, ideaController.editPage);
+router.post("/editar/:id", isLoggedIn, ideaController.updateIdea);
+router.post("/deletar/:id", isLoggedIn, ideaController.deleteIdea);
 
-// Detalhe
-router.get("/:id", isLoggedIn, ideaController.detail);
-
-// Editar
-router.get("/:id/editar", isLoggedIn, ideaController.editPage);
-router.post("/:id/editar", isLoggedIn, ideaController.edit);
-
-// Deletar
-router.post("/:id/deletar", isLoggedIn, ideaController.delete);
-
-// Votar
-router.post("/:id/votar", isLoggedIn, ideaController.vote);
+// Votação
+router.post("/votar", isLoggedIn, voteController.vote);
 
 module.exports = router;

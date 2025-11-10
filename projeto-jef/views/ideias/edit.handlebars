@@ -1,8 +1,0 @@
-<h2>Editar Ideia</h2>
-<form method="POST" action="/ideias/{{idea.id}}/editar">
-  <input type="hidden" name="_csrf" value="{{csrfToken}}" />
-  <input type="text" name="title" value="{{idea.title}}" required /><br />
-  <textarea name="description" required>{{idea.description}}</textarea><br />
-  <input type="text" name="category" value="{{idea.category}}" required /><br />
-  <button type="submit">Salvar</button>
-</form>

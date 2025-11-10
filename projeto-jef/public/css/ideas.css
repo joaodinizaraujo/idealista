@@ -1,0 +1,296 @@
+/* ======== Layout base ======== */
+body {
+  background: linear-gradient(135deg, #1677ff 0%, #3b8be0 100%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+/* ======== Container principal (Ideas/Dashboard) ======== */
+.ideas-container {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(30, 60, 140, 0.12);
+  width: 100%;
+  max-width: 950px;
+}
+
+.ideas-container h2,
+.ideas-container h1 {
+  color: #1677ff;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* ======== Botões gerais ======== */
+.btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #1677ff 80%, #45a6ff 100%);
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.8rem;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.12s;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, #2453a6 60%, #1677ff 100%);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: #ff4d4f;
+}
+
+.btn-danger:hover {
+  background: #d9363e;
+}
+
+.btn-secondary {
+  background: #e3e9f5;
+  color: #2453a6;
+}
+
+.btn-secondary:hover {
+  background: #d4e1fa;
+}
+
+/* ======== DASHBOARD ESPECÍFICO ======== */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #dde9fa;
+}
+
+.welcome-title {
+  color: #1677ff;
+  font-weight: 700;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.logout-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.section-title {
+  color: #2453a6;
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.add-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+}
+
+.no-ideas-message {
+  text-align: center;
+  color: #666;
+  padding: 2rem 0;
+  border: 1px dashed #dde9fa;
+  border-radius: 0.8rem;
+  margin-top: 1rem;
+}
+
+/* ======== Lista de ideias ======== */
+.ideas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ideas-list li {
+  background: #f8fbff;
+  border: 1.5px solid #dde9fa;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(22, 119, 255, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ideas-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(22, 119, 255, 0.1);
+}
+
+.ideas-list li h3 a {
+  text-decoration: none;
+  color: #2453a6;
+}
+
+.ideas-list h3 {
+  color: #2453a6;
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem;
+}
+
+.ideas-list p {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.ideas-list small {
+  color: #666;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+/* ======== Ações ======== */
+.idea-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Garante que o formulário dentro das ações seja flexível */
+.idea-actions form {
+  margin: 0;
+}
+
+/* ======== Formulários (Formulários em create/edit) ======== */
+form {
+  margin: 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2453a6;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid #dde9fa;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  background: #f8fbff;
+  transition: border 0.2s;
+  margin-bottom: 1rem;
+  box-sizing: border-box; /* Garante que padding não estoure a largura */
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #1677ff;
+  outline: none;
+}
+
+/* ======== Flash messages ======== */
+.flash-messages .error {
+  background: #ffe4e4;
+  color: #b10021;
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+
+.flash-messages .success {
+  background: #e3f7ef;
+  color: #188546;
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+
+/* ======== Página de detalhe (detail.handlebars) ======== */
+.idea-detail {
+  background: #f8fbff;
+  border: 1.5px solid #dde9fa;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 3px 10px rgba(22, 119, 255, 0.05);
+}
+
+.idea-detail h2 {
+  color: #2453a6;
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  text-align: left; /* Ajuste para o detalhe */
+}
+
+.idea-detail p {
+  color: #333;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.idea-detail .votes {
+  margin-top: 0.8rem;
+  color: #2453a6;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* ======== Responsividade ======== */
+@media (max-width: 768px) {
+  .ideas-container {
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .section-title {
+    text-align: center;
+  }
+
+  .add-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .idea-actions {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .btn,
+  .logout-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

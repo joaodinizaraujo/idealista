@@ -1,120 +1,117 @@
-const Idea = require("../models/Idea");
-const Vote = require("../models/Vote");
-const { User } = require("../models");
+const { Idea, Vote, User } = require("../models");
+const sequelize = require("sequelize");
 
-// Listar ideias ordenadas por votos (desc)
-exports.list = async (req, res) => {
-  const ideas = await Idea.findAll({
-    include: [
-      {
-        model: Vote,
-        attributes: [],
-      },
-    ],
-    attributes: {
-      include: [
-        [
-          // Subquery pra contar votos UP
-          sequelize.literal(`(
-            SELECT COUNT(*) FROM tb_votes 
-            WHERE tb_votes.idea_id = Idea.id AND tb_votes.vote_type = 'UP'
-          )`),
-          "upvotes",
+exports.listIdeasForDashboard = async (req, res) => {
+  try {
+    const ideas = await Idea.findAll({
+      include: [{ model: User, attributes: ["name"] }],
+      attributes: {
+        include: [
+          [
+            sequelize.literal(
+              `(SELECT COUNT(*) FROM tb_votes WHERE tb_votes.idea_id = Idea.id AND tb_votes.vote_type = 'UP')`
+            ),
+            "totalUpvotes",
+          ],
         ],
-      ],
-    },
-    order: [[sequelize.literal("upvotes"), "DESC"]],
-  });
+      },
+      order: [[sequelize.literal("totalUpvotes"), "DESC"]],
+      group: ["Idea.id", "User.id", "User.name"],
+    });
 
-  res.render("ideas/list", { ideas, user: req.session.user });
+    const formattedIdeas = ideas.map((idea) => idea.get({ plain: true }));
+
+    res.render("dashboard", {
+      ideas: formattedIdeas,
+      user: req.session.user,
+    });
+  } catch (err) {
+    console.error("Erro ao carregar ideias para o Dashboard:", err);
+    req.flash("error", "Erro ao carregar ideias no Dashboard.");
+    res.redirect("/");
+  }
 };
 
-// Tela de nova ideia
+exports.redirectList = (req, res) => {
+  res.redirect("/dashboard");
+};
+
+// Rotas de CRUD
 exports.createPage = (req, res) => {
-  res.render("ideas/create");
+  res.render("ideias/nova");
 };
 
-// Criar nova ideia
-exports.create = async (req, res) => {
+exports.createIdea = async (req, res) => {
   const { title, description, category } = req.body;
-  await Idea.create({
-    title,
-    description,
-    category,
-    owner_id: req.session.user.id,
-  });
-  req.flash("success", "Ideia criada com sucesso!");
-  res.redirect("/ideias");
+  try {
+    await Idea.create({
+      title,
+      description,
+      category,
+      owner_id: req.session.user.id,
+    });
+
+    req.flash("success", "Ideia criada com sucesso!");
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.error("Erro ao criar ideia:", err);
+    req.flash("error", "Erro ao criar ideia.");
+    res.redirect("/ideias/nova");
+  }
 };
 
-// Tela de detalhe
-exports.detail = async (req, res) => {
-  const idea = await Idea.findByPk(req.params.id, {
-    include: [{ model: Vote }],
-  });
-  if (!idea) return res.redirect("/ideias");
-  // Conta votos
-  const upvotes = await Vote.count({
-    where: { idea_id: idea.id, vote_type: "UP" },
-  });
-  const downvotes = await Vote.count({
-    where: { idea_id: idea.id, vote_type: "DOWN" },
-  });
-  res.render("ideas/detail", { idea, upvotes, downvotes });
-};
-
-// Editar página (só dono)
 exports.editPage = async (req, res) => {
-  const idea = await Idea.findByPk(req.params.id);
-  if (!idea || idea.owner_id !== req.session.user.id) {
-    req.flash("error", "Acesso negado!");
-    return res.redirect("/ideias");
+  const { id } = req.params;
+  try {
+    const idea = await Idea.findByPk(id);
+    if (!idea || idea.owner_id !== req.session.user.id) {
+      req.flash("error", "Você não tem permissão para editar esta ideia!");
+      return res.redirect("/dashboard");
+    }
+    res.render("ideias/editar", { idea });
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Erro ao carregar ideia.");
+    res.redirect("/dashboard");
   }
-  res.render("ideas/edit", { idea });
 };
 
-// Editar (só dono)
-exports.edit = async (req, res) => {
+exports.updateIdea = async (req, res) => {
+  const { id } = req.params;
   const { title, description, category } = req.body;
-  const idea = await Idea.findByPk(req.params.id);
-  if (!idea || idea.owner_id !== req.session.user.id) {
-    req.flash("error", "Acesso negado!");
-    return res.redirect("/ideias");
+
+  try {
+    const idea = await Idea.findByPk(id);
+    if (!idea || idea.owner_id !== req.session.user.id) {
+      req.flash("error", "Você não pode editar esta ideia!");
+      return res.redirect("/dashboard");
+    }
+
+    await idea.update({ title, description, category });
+    req.flash("success", "Ideia atualizada com sucesso!");
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Erro ao atualizar ideia.");
+    res.redirect("/dashboard");
   }
-  idea.title = title;
-  idea.description = description;
-  idea.category = category;
-  await idea.save();
-  req.flash("success", "Ideia editada com sucesso!");
-  res.redirect(`/ideias/${idea.id}`);
 };
 
-// Remover (só dono)
-exports.delete = async (req, res) => {
-  const idea = await Idea.findByPk(req.params.id);
-  if (!idea || idea.owner_id !== req.session.user.id) {
-    req.flash("error", "Acesso negado!");
-    return res.redirect("/ideias");
+exports.deleteIdea = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const idea = await Idea.findByPk(id);
+    if (!idea || idea.owner_id !== req.session.user.id) {
+      req.flash("error", "Você não pode deletar esta ideia!");
+      return res.redirect("/dashboard");
+    }
+
+    await idea.destroy();
+    req.flash("success", "Ideia removida com sucesso!");
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Erro ao deletar ideia.");
+    res.redirect("/dashboard");
   }
-  await idea.destroy();
-  req.flash("success", "Ideia removida!");
-  res.redirect("/ideias");
-};
-
-// Votar
-exports.vote = async (req, res) => {
-  const { type } = req.body; // type = 'UP' ou 'DOWN'
-  const { id: idea_id } = req.params;
-  const user_id = req.session.user.id;
-
-  // Garante voto único
-  const existing = await Vote.findOne({ where: { user_id, idea_id } });
-  if (existing) {
-    req.flash("error", "Você já votou nesta ideia!");
-    return res.redirect(`/ideias/${idea_id}`);
-  }
-
-  await Vote.create({ user_id, idea_id, vote_type: type });
-  req.flash("success", "Voto registrado!");
-  res.redirect(`/ideias/${idea_id}`);
 };
